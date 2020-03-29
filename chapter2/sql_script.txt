@@ -1,0 +1,90 @@
+2.3 MySQL基本操作
+2.3.1 MySQL基本管理
+1、查看数据库。
+mysql> show databases;
+
+2、选择数据库
+mysql> use mysql;
+
+3、查看数据表
+mysql> show tables;
+
+4、查看数据表结构
+mysql> show columns from help_topic;
+
+5、查看数据表索引
+mysql> show index from help_topic;
+
+
+2.3.2 MySQL数据库操作
+1、创建数据库
+mysql> CREATE DATABASE test;
+mysql> show databases;
+
+2、删除数据库
+mysql> drop database test;
+mysql> show databases;
+
+
+2.3.4 MySQL数据表操作
+1、创建数据表
+mysql> create database data_school;
+mysql> use data_school;
+mysql> CREATE TABLE IF NOT EXISTS `python_class`(
+    ->    `id` INT UNSIGNED AUTO_INCREMENT,
+    ->    `number` INT(10) NOT NULL,
+    ->    `name` VARCHAR(50) NOT NULL,
+    ->    `class_name` VARCHAR(50) NOT NULL,
+    ->    PRIMARY KEY ( `id` )
+    -> )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+2、删除数据表
+mysql> show tables;
+mysql> drop tables python_class;
+mysql> show tables;
+
+3、插入数据
+mysql> INSERT INTO python_class
+    -> (number, name, class_name)
+    -> VALUES
+    -> (1001, "小萌", "python快乐学习班");
+
+mysql> INSERT INTO python_class (number, name, class_name) VALUES (1002, "小智","python快乐学习班");
+
+mysql> INSERT INTO python_class (number, name, class_name) VALUES (1003, "小强","python快乐学习班");
+
+4、查询数据
+mysql> select * from python_class;
+mysql> select number,name from python_class;
+
+5、WHERE子句
+mysql> select * from python_class where name='小智';
+mysql> select * from python_class where id=1;
+mysql> select * from python_class where number=1003 and class_name='python快乐学习班';
+mysql> select * from python_class where number=1001 or name='小强';
+
+6、UPDATA子句
+mysql> update python_class set class_name='python学习班';
+mysql> select * from python_class;
+
+mysql> update python_class set number=1005 where name='小强';
+mysql> select * from python_class where name='小强';
+
+7、DELETE子句
+mysql> delete from python_class where number=1005;
+mysql> select * from python_class;
+
+
+2.4 MySQL高级操作
+1、LIKE子句
+mysql> select * from python_class where name like '%智%';
+mysql> select * from python_class where number like '%03';
+mysql> select * from python_class where number like '10%';
+
+2、排序
+mysql> select * from python_class order by number asc;
+mysql> select * from python_class order by number;
+mysql> select * from python_class order by number desc;
+
+3、分组
+mysql> select class_name,count(class_name) from python_class group by class_name;

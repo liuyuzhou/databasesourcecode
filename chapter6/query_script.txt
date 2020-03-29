@@ -1,0 +1,154 @@
+6.3 MongoDB基本概念
+6.3.1 数据库
+> db
+> show dbs
+
+
+6.4 MongoDB基本操作
+6.4.1 MongoDB创建数据库
+> show dbs
+> db
+> use mongo_use
+>db
+> show dbs
+> db.mongo_use.insert({"name":"mongodb learning"})
+> show dbs
+
+
+6.4.2 MongoDB删除数据库
+> show dbs
+> use mongo_use
+> db.dropDatabase()
+
+
+6.4.3 MongoDB创建集合
+> use mongo_use
+> db
+> db.createCollection("python_class")
+> show collections
+> db.try.insert({"name":"test collection create"})
+> show collections
+
+
+6.4.4 MongoDB删除集合
+> use mongo_use
+> show collections
+> db.try.drop()
+> show collections
+
+
+6.4.5 MongoDB插入文档
+> use mongo_use
+> show collections
+> db.python_class.insert({name:"小萌",class_name:"python快乐学习班",number:1001})
+> db.python_class.find()
+> document=({name:"小明",class_name:"python快乐学习班",number:1002})
+> db.python_class.insert(document)
+> db.python_class.find()
+
+
+6.4.6 MongoDB更新文档
+1、update()方法
+> use mongo_use
+> show collections
+> db.python_class.find()
+> db.python_class.update({name:"小明"},{$set:{name:"小王"}})
+> db.python_class.find()               
+> db.python_class.update({class_name:"python快乐学习班"},{$set:{class_name:"python学习班"}},{multi:true})
+> db.python_class.find()
+
+2、save()方法
+> db.python_class.save({"_id":ObjectId("5c1b6f6bb9444ea171d76ba9"),name:"小明",class_name:"python学习班",number:1002})
+> db.python_class.find()
+
+6.4.7 MongoDB删除文档
+> db.python_class.find()
+> db.python_class.remove({name:"小明"})
+> db.python_class.find()
+>db.python_class.remove({})
+
+> db.python_class.insert({name:"小萌",class_name:"python快乐学习班",number:1001})
+> db.python_class.find()
+> db.python_class.remove({})
+> db.python_class.find()
+
+> db.python_class.insert({name:"小萌",class_name:"python快乐学习班",number:1001})
+> db.python_class.insert({name:"小萌",class_name:"python快乐学习班",number:1001})
+> db.python_class.find()                                                  :1001}
+
+> db.python_class.remove({name:"小萌"},1)
+> db.python_class.find()
+
+6.4.8 MongoDB查询文档
+> db.python_class.find().pretty()
+
+AND条件
+> db.python_class.find({name:"小萌",number:1001}).pretty()
+
+OR条件
+> db.python_class.find({$or:[{name:"小明"},{number:1001}]}).pretty()
+
+AND和OR联合使用
+> db.python_class.find({number:{$gt:1000},$or:[{name:"小明"},{name:"小萌"}]}).pretty()
+
+
+6.4.9 MongoDB条件操作符
+> db.python_class.insert({name:"小张",class_name:"python快乐学习班",number:1003})
+> db.python_class.find().pretty()
+
+MongoDB大于（>）操作符$gt的使用
+> db.python_class.find({number:{$gt:1002}}).pretty()
+类似于SQL语句：
+Select * from python_class where number > 1002;
+
+MongoDB小于（<）操作符$lt的使用
+> db.python_class.find({number:{$lt:1002}}).pretty()
+类似于SQL语句：
+Select * from python_class where number < 1002;
+
+MongoDB大于等于（>=）操作符$gte的使用
+> db.python_class.find({number:{$gte:1002}}).pretty()
+类似于SQL语句：
+Select * from python_class where number >= 1002;
+
+MongoDB小于等于（<=）操作符$lte的使用
+> db.python_class.find({number:{$lte:1002}}).pretty()
+类似于SQL语句：
+Select * from python_class where number <= 1002;
+
+6.4.10 MongoDB $type操作符
+> db.python_class.find({number:{$type:1}}).pretty()
+
+6.4.11 MongoDB Limit与Skip方法
+> db.python_class.find({},{number:1,_id:0}).limit(1)
+> db.python_class.find({},{number:1,_id:0}).limit(2)
+> db.python_class.find({},{number:1,_id:0}).limit()
+
+> db.python_class.find({},{number:1,_id:0}).limit(1).skip(0)
+> db.python_class.find({},{number:1,_id:0}).limit(1).skip(1)
+> db.python_class.find({},{number:1,_id:0}).limit(2).skip(0)
+> db.python_class.find({},{number:1,_id:0}).limit(2).skip(1)
+> db.python_class.find({},{number:1,_id:0}).limit(2).skip(2)
+> db.python_class.find({},{number:1,_id:0}).limit().skip()
+> db.python_class.find({},{number:1,_id:0}).limit().skip(1)
+> db.python_class.find({},{number:1,_id:0}).limit().skip(2)
+> db.python_class.find({},{number:1,_id:0}).limit().skip(3)
+
+6.4.12 MongoDB排序
+> db.python_class.find({},{number:1,_id:0}).sort({number:1})
+> db.python_class.find({},{number:1,_id:0}).sort({number:-1})
+
+6.4.13 MongoDB索引
+> db.python_class.createIndex({name:1})
+
+> db.python_class.createIndex({name:1,number:-1})
+
+> db.python_class.createIndex({class_name:1,number:-1},{background:true})
+
+6.4.14 MongoDB聚合
+> db.python_class.insert({name:"小张",class_name:"python快乐学习班",number:1004})
+> db.python_class.find().pretty()
+
+> db.python_class.aggregate([{$group:{_id:"$name",num_tutorial:{$sum:1}}}])
+类似如下SQL语句：
+SELECT name, count(*) FROM python_class GROUP BY NAME

@@ -1,0 +1,13 @@
+>>> import sqlalchemy
+>>> from sqlalchemy import Column, Integer, String
+>>> from sqlalchemy.ext.declarative import declarative_base
+>>> Base = declarative_base()
+>>> class Course(Base):
+    __tablename__ = 'course'
+    id = Column(Integer, primary_key=True)
+    course_name = Column(String(20), default=None, nullable=False, comment='课程名称')
+    teacher_name = Column(String(20), default=None, nullable=False, comment='任课老师')
+    class_times = Column(Integer, default=0, nullable=False, comment='课时')
+
+
+>>> Course.__table__
