@@ -1,7 +1,8 @@
 import os
 from chapter9.database import models
 from chapter9.rule import key_words
-from pyecharts import Bar, Pie, WordCloud
+from pyecharts.charts import Bar, Pie, WordCloud
+from pyecharts import options as opts
 from chapter9.config import ROOT_PATH
 
 file_path_pre = os.path.join(ROOT_PATH, 'static/')
@@ -52,10 +53,10 @@ def draw_bar_horizontal():
     word_items = list(word_dict.items())
     word_keys = [k for k, v in word_items]
     word_values = [v for k, v in word_items]
-    bar = Bar('水平图表', '关键字使用情况分布')
-    bar.add('引用次数', word_keys, word_values)
-    # 可以选择是否在控制台打印配置信息，打开注释，执行时在控制台打印配置详情信息
-    # bar.show_config()
+    bar = Bar()
+    bar.add_xaxis(word_keys)
+    bar.add_yaxis('引用次数', word_values)
+    bar.set_global_opts(title_opts=opts.TitleOpts(title='水平图表', subtitle='关键字使用情况分布'))
     # html 文件存放路径
     bar.render(path=file_path_pre + "bar_horizontal.html")
 
@@ -65,9 +66,10 @@ def draw_pie():
     word_items = list(word_dict.items())
     word_keys = [k for k, v in word_items]
     word_values = [v for k, v in word_items]
-    pie = Pie("饼图")
-    pie.add("引用次数", word_keys, word_values, is_label_show=True)
-    # pie.show_config()
+    data_pairs = [list(z) for z in zip(word_keys, word_values)]
+    pie = Pie()
+    pie.add("引用次数", data_pairs)
+    pie.set_global_opts(title_opts=opts.TitleOpts(title='饼图'))
     # html 文件存放路径
     pie.render(path=file_path_pre + "pie.html")
 
@@ -77,9 +79,10 @@ def draw_word_cloud():
     word_items = list(word_dict.items())
     word_keys = [k for k, v in word_items]
     word_values = [v for k, v in word_items]
-    word_cloud = WordCloud(width=1300, height=620)
-    word_cloud.add("", word_keys, word_values, word_size_range=[20, 100])
-    # word_cloud.show_config()
+    data_pairs = [list(z) for z in zip(word_keys, word_values)]
+    word_cloud = WordCloud()
+    word_cloud.add("", data_pairs, word_size_range=[20, 100])
+    word_cloud.set_global_opts(title_opts=opts.TitleOpts(title='词云图'))
     # html 文件存放路径
     word_cloud.render(path=file_path_pre + "word_cloud.html")
 
